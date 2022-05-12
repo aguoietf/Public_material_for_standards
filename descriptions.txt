@@ -1,0 +1,31 @@
+Good morning everyone, my talk for today is about end-to-end mgt&ctrl for transport and access networks. 
+
+My talk is in two parts, the first part presents an overview and challenges about end-to-end network management and the second part talks about relevant progresses in standardization groups mainly in IETF and BBF for unifiying the control and management of transport and access networks.
+
+End-to-end management and control brings diverse network resources from different network segments under the same platform and allow these resources to be managed and coordinated in a uniform fashion. Automations of network operations can then be built on top of it which helps network operations to achieve the eventual goal of autonomous networking with capabilities like self-healing, self-optimizing and self-evolving with less human intervention.
+
+Integration of networks with different technologies including transport and access has been a challenging work, because these networks are typcially managed as silos of managment domains with administrative boundaries and less software interfaces in between, and the networks themselves are complex in nature with multi-technologies, by multiple vendor systems, and networks are organized in multi-domain and multi-layer.
+
+To address this challenge, new control architecture such as SDN with open interfaces are developed. SDN control provides the network with centralized intelligence and enables application such as big-data analytics for better network optimization. To achieve interoperability, SDN controllers use standard and open interfaces to interact with different vendor systems. And together with higher layer service orchestration system they can deliver and maintain services in a closed-loop automated fashion.
+
+So here is a diagram of an end-to-end network topology from end user to the cloud. It includes customer premises network, access network, aggregation network and core network. The aggregation network can be built with multi-layer IP/Ethernet networks as well as OTN/L0 optical networks. Normal services that request flexible bandwidth and regular QoS can be routed over IP/ETH networks. business services or services that require high QoS such as low latency and deterministic performance can go over OTN or optical networks directly to the cloud. All these network segments need to work together to provide assured high-quality user experience. If the network domains are managed in silos, a lot of manual operations has to be done in between, which is really inefficient. To deal with this problem, we introduce a hierarchical management and control architecture with SDN control and orchestrator. For each network segment there is a domain controller which manages the underlying network through standard south bouth interfaces, and expose standard northbound interface to the E2E Orchestrator on the top. For example, the AN controller is used to management and control the underlay PON network which includes OLT, ODN and ONUs. The Aggregation ntwork controller is responsible to coordinate the management and control of differentiated services in both IP and OTN networks. The orchestrator cooperates with each domain controller this standard NBI and performs the resource and service orchestration functions.
+Now lets put a focus on the access and aggregation networks and show the hierarchical control here. At the lowest level is the domain controller, which usually manages a single network domain, if there are multiple domains then there are multiple controllers and these controllers are further connected to another hierarchcal controller on the top, which is used to coordinate services across multiple domains including the access, IP and OTN domains. In real deployment the hierarchical controller can also be integrated with the service orchestrator as shown in the picture. 
+
+
+
+
+ACTN:
+In IETF, the ACTN (Abstraction and Control of Traffic Engineering (TE) Networks) is defined in RFC8453 by the TEAS WG. The ACTN framework includes a set of management and control functions used to operate one or more TE networks, to construct virtual networks that can be presented to customers and that are built from abstractions of the underlying networks. 
+ACTN defines a hierarchy controller architecture with three layers of controllers including the CNC (Customer Network Controller), the MDSC (Multi-Domain Service Coordinator) and the PNC (Provisioning Network Controller). A set of YANG data models is also defined in IETF, which can be used for both the MPI (MDSC-PNC Interface) and the CMI (CNC-MDSC Interface) interfaces in the ACTN architecture. 
+ACTN can be used as the basic architecture for the control and management of the Optical Transport Network in F5G. 
+
+
+CloudCO:
+The CloudCO project is being developed by the BBF SDN and NFV Work Area to re-architects the broadband network using SDN and Network Function Virtualization (NFV) on cloud infrastructure.
+The reference architectural framework of the CloudCO is defined in TR-384. The CloudCO can be used as the basic architecture for control and management of the Optical Access Network. 
+
+Page 8: BAA - broadband access abstractions
+SBI point to the interface between CCO-DO (domain orchestrator) and BAA and BAA and device
+
+
+
