@@ -1,0 +1,195 @@
+
+This is nice so we can identify the need for a new xMI interface at the NBI of the MDSC
+
+
+       +-------------------------------------+   |    +---------------+
+       |                                     |   |    |   Service     |
+       |    Consumer orchestration system    | =====> | Orchestrator  |
+       |                                     |   |    |      (1)      |
+       +-------------------------------------+   |    +---------------+
+                         ^                       |            ^
+                         | NSC NBI               |            | XMI (2)
+                         v                       |            v
+       +-------------------------------------+   |    +---------------+
+       |                                     |   |    |     MDSC      |
+       | IETF Network Slice Controller (NSC) | =====> |   (Network    |
+       |                                     |   |    | Orchestrator) |
+       +-------------------------------------+   |    +---------------+
+                         ^                       |            ^
+                         | NSC SBI               |            | MPI
+                         v                       |            v
+       +-------------------------------------+   |    +---------------+
+       |         Network Controller(s)       | =====> |  PNC/MSDC(s)  |
+       +-------------------------------------+   |    +---------------+
+
+Note 1 - The Service Orchestrator may contain also some MDSC service-related functions,
+as described in section 4.2 of [RFC8453].
+
+Note 2 - This is an interface between two MDSC functional elements encompassing different
+MDSC service-related functions which is not defined in [RFC8453].
+
+---
+
+                     (Customer VPL Request)
+                                
+      Boundary                  :
+      Between  . . . . . . . . .:. . . . . . . . . . .
+      Customer &                :
+      Network Operator          : CMI
+                                :
+                 +-----------------------------+
+                 | MDSC (Service Orchestrator) |
+                 +-----------------------------+
+      Boundary                  :
+      Between  . . . . . . . . .:. . . . . . . . . . .
+      Consumer &                :
+      Network Provider          : NSC NBI (2)
+                                :
+                 +-----------------------------+
+                 | MDSC (Network Orchestrator) |
+                 +-----------------------------+
+                                :
+                                : MPI
+                                :
+                              -----
+                             | PNC |
+            Site A          ( ----- )           Site B
+           +-----+         (         )         +-----+
+           | CE1 |========(  Physical )========| CE2 |
+           +-----\         ( Network )         /-----+
+                  \         (_______)         /
+                   \            ||           /
+                    \           ||          /
+                VPL1 \          ||         / VPL2
+                      \         ||        /
+                       \        ||       /
+                        \       ||      /
+                         \-------------/
+                         |     CE3     |
+                         +-------------+
+                              Site C
+
+      Key:   ... ACTN control connectivity
+             === Physical connectivity
+             --- Logical connectivity
+
+
+                    Figure 2: Virtual Private Line Model
+
+---
+
+                     +--------------+   +--------------+
+                     |     CNC-A    |   |     CNC-B    |
+                     +--------------+   +--------------+
+                                 :         :
+      Boundary                   :         :
+      Between  . . . . . . . . ..:. . . . . . . . . . .
+      Consumer &                 :         :
+      Network Operator           : CMI-A   : CMI-B
+                                 :         :
+                       +-----------------------------+
+                       | MDSC (Service Orchestrator) |
+                       +-----------------------------+
+      Boundary                        :
+      Between   . . . . . . . . . . . : . . . . . . . . . . .
+      Consumer &                      :
+      Network Provider                : NSC NBI (2)
+                                      :
+                       +-----------------------------+
+                       | MDSC (Network Orchestrator) |
+                       +-----------------------------+
+                       :              :              :
+                       : MPI          : MPI          : MPI
+                       :              :              :
+                   +-------+      +-------+      +-------+
+                   |  PNC  |      |  PNC  |      |  PNC  |
+                   +-------+      +-------+      +-------+
+                       :              :              :
+                       :              :              :
+        ______     ---------      ---------      ---------     ______
+       <      >   (         )    (         )    (         )   <      >
+       <Site A>==( Physical  )==( Physical  )==( Physical  )==<Site B>
+       <      >   ( Network )    ( Network )    ( Network )   <      >
+       <      >    (       )      (       )      (       )    <      >
+       <      >     -------        -------        -------     <      >
+       <      >-----------------------------------------------<      >
+       <______>                                               <______>
+
+      Key:   ... ACTN control connectivity
+             === Physical connectivity
+             --- Logical connectivity
+
+
+                            Figure 3: VPN Model
+---
+
+               +--------------+                  ___________
+               |    Service   |                 (           )
+               | Orchestrator |---------------->(  Network  )
+               +--------------+                 (  Slice 2  )
+                  ^                             (___________)
+                  |                           ___________  ^
+                  |  +--------------+        (           ) :
+                  |  |    Service   |------->(  Network  ) :
+                  |  | Orchestrator |        (  Slice 1  ) :
+                  |  +--------------+        (___________) :
+                  |       ^                      ^    ^    :
+      Boundary    |       |                      :    :    :
+      Between    .|. . . .|. . . . . . . . . . . : . .:. . : . . .
+      Consumer &  |       |                      :    :    :
+      Network     |       |                      :    :    :
+      Provider    v       v                      :    :    :
+               +---------------+                 :    :....:
+               |     MDSC      |                 :         :
+               |   (Network    |                 :         :
+               | Orchestrator) |                 :         :
+               +---------------+                 :         :
+                        ^                  ------^--       :
+                        |                 (         )      :
+                        v                (  Physical )     :
+                    +-------+             ( Network )      :
+                    |  PNC  |<------------>(       )    ---^-----
+                  +-------  |               -------    (         )
+                  |  PNC  |-+                         (  Physical )
+                  |       |<-------------------------->( Network )
+                  +-------+                             (       )
+                                                         -------
+
+      Key: --- ACTN control connection
+           ... Virtualization/abstraction through slicing
+
+
+                         Figure 4: Network Slicing
+                         
+---
+
+                         +----------+
+                         | Consumer |
+                         +----------+
+                               :
+                        .......:....... Network Slice Service Interface
+                               :
+                       +---------------+
+                       |      MDSC     |
+                       |    Network    |
+                       | Orchestrator  |
+                       +---------------+
+                               :
+                        .......:....... MPI
+                               :
+                           +-------+
+                           |  PNC  |
+                           +-------+
+                               :
+                        .......:....... SBI
+                               :
+                           ----------
+                          (          )
+                         (  Physical  )
+                          ( Network  )
+                           (________)
+
+
+                  Figure 6: The Yang Interfaces in Context
+
+
