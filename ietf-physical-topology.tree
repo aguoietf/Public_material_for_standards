@@ -1,0 +1,237 @@
+module: ietf-network
+  +--rw networks
+     +--rw network* [network-id]
+        +--rw network-id            network-id
+        +--rw network-types
+***************************
+        |  +--rw phyt:physical-topology!
+***************************
+        +--rw supporting-network* [network-ref]
+        |  +--rw network-ref    -> /networks/network/network-id
+        +--rw node* [node-id]
+        |  +--rw node-id                 node-id
+        |  +--rw supporting-node* [network-ref node-ref]
+        |  |  +--rw network-ref
+        |  |  |       -> ../../../supporting-network/network-ref
+        |  |  +--rw node-ref       -> /networks/network/node/node-id
+*************************** (copied from TE topology)
+        |  +--rw admin-status?            identityref
+        |  +--rw name?                    string
+        |  +--rw node-type?               string
+        |  +--rw sub-node-type?           string
+        |  +--rw role?                    string
+        |  +--rw ref-parent-subnet?       string
+        |  +--rw geolocation?             string
+        |     +--rw longitude?            string 
+        |     +--rw latitude?             string
+        +--rw supporting-inventory* [inventory-id]
+        |  +--rw inventory-id             string
+        |  +--rw inventory-type           identityref
+        +--ro oper-status?                identityref
+***************************
+        |  +--rw nt:termination-point* [tp-id]
+***************************
+        |     +--rw admin-status?        identityref (copied from TE)
+        |     +--ro oper-status?         identityref (copied from TE)
+        |     +--rw name?                string      (copied from TE)
+		|     +--rw supporting-inventory* [inventory-id]
+		|     |  +--rw inventory-id      string
+		|     |  +--rw inventory-type    identityref
+		|     +--rw alias?               string
+		|     +--rw description?         string
+		|     +--rw direction            identityref
+		|     +--ro ipv4-address?        string
+		|     +--ro ipv6-address?        string
+        |     +--rw odu!
+        |     |  +--ro msi-status?                       string
+        |     |  +--ro transmit-timeslot?                string
+        |     |  +--ro receive-timeslot?                 string
+        |     |  +--ro available-transmit-timeslot?      string
+        |     |  +--ro available-receive-timeslot?       string		
+        |     +--rw otu!
+        |     |  +--ro fec-status?       string
+        |     |  +--ro fec-type?         string
+        |     +--rw och!
+        |     |  +--ro protect-role?         string
+        |     |  +--ro laser-status?         string
+        |     |  +--ro auto-negotiation?     string
+        |     |  +--ro laser-auto-shut?      string
+        |     |  +--ro working-mode?         string
+        |     |  +--ro mapping-mode?         string
+        |     |  +--ro channel-use-status?   string
+        |     |  +--ro attenuation-ratio?    string
+        |     |  +--ro max-attenuation-ratio?   string
+        |     |  +--ro min-attenuation-ratio?   string
+        |     |  +--ro nominal-gain?         string
+        |     |  +--ro oa-work-mode?         string
+        |     |  +--ro max-number-och?       string
+        |     |  +--ro frequency-spacing?    string
+        |     |  +--ro frequency?            string
+        |     |  +--ro odu-timeslot-model?               string (from TTP)
+        |     |  +--ro planned-center-frequency?         string (from TTP)
+        |     |  +--ro receive-center-frequency?         string (from TTP)
+        |     |  +--ro planned-frequency-width?          string (from TTP)
+        |     |  +--ro receive-frequency-width?          string (from TTP)
+        |     |  +--ro receive-frequency?                string (from TTP)
+        |     |  +--ro gridless-attenuation?             string (from TTP)
+        |     |  +--ro wavelength-monitoring?            string (from TTP)
+        |     |  +--ro planned-band-type?                string (from TTP)
+        |     |  +--ro receive-band-type?                string (from TTP)
+        |     |  +--ro msi-status?                       string (from TTP)
+        |     |  +--ro transmit-timeslot?                string (from TTP)
+        |     |  +--ro receive-timeslot?                 string (from TTP)
+        |     |  +--ro available-transmit-timeslot?      string (from TTP)
+        |     |  +--ro available-receive-timeslot?       string (from TTP)
+        |     +--sdh!
+        |     |  +--ro laser-status?         string
+        |     |  +--ro binding-object?       string
+        |     +--pdh!
+        |     +--eth!
+        |     |  +--ro vlan-id?              string
+        |     |  +--ro vlan-priority?        string
+        |     |  +--ro port-status?          string
+        |     |  +--ro working-mode?         string
+        |     |  +--ro port-type?            string
+        |     |  +--ro entrance-detect?      string
+        |     |  +--ro non-auto-negotiation-flow-control-mode?    string
+        |     |  +--ro auto-negotiation-flow-control-mode?        string
+        |     |  +--ro mac-loop-back?        string
+        |     |  +--ro phy-loop-back?        string
+        |     |  +--ro default-forward-priority?         string
+        |     |  +--ro encapsulate-protocol?             string
+        |     |  +--ro scrambling-mode?      string
+        |     |  +--ro check-field-length?   string
+        |     |  +--ro fcs-calculate-seq?    string
+        |     |  +--ro is-with-extended-header?          string
+        |     |  +--ro lcas-status?          string
+        |     |  +--ro binding-object?       string
+        |     |  +--ro ip-assigned-type?     string
+        |     |  +--ro mpls-status?          string
+        |     |  +--ro protocol-identifier?  string
+        |     |  +--ro maximum-frame-size?   string
+        |     |  +--ro mac-address?          string
+        |     |  +--ro customized-qinq-domain?           string
+        |     |  +--ro defult-vlan-id?       string
+        |     |  +--ro port-default-user-priority?       string
+        |     |  +--ro max-reserved-bandwidth?           string
+        |     +--ro lag!
+        |     |  +--ro lag-type?             string
+        |     |  +--ro load-balance?         string
+        |     |  +--ro load-balance-mode?    string
+        |     |  +--ro revertive-mode?       string
+        |     |  +--ro system-priority?      string
+        |     +--ro trunk!
+        |     |  +--ro tag?                  string
+        |     |  +--ro vlan-id?              string
+        |     |  +--ro vlan-priority?        string
+        |     |  +--ro port-type?            string
+        |     |  +--ro entrance-detect?      string
+        |     +--ro atm!
+        |     +--ro microwave!
+        |     |  +--ro link-id?              string
+        |     |  +--ro actual-rx-link-id?    string
+        |     |  +--ro loopback?             string
+        |     |  +--ro atpc-status?          string
+        |     |  +--ro atpc-upper-threshold?             string
+        |     |  +--ro atpc-lower-threshold?             string
+        |     |  +--ro atpc-adjustment-status?           string
+        |     |  +--ro am-status?            string
+        |     |  +--ro channel-space?        string
+        |     |  +--ro assured-capacity-modulation-mode? string
+        |     |  +--ro full-capacity-modulation-mode?    string
+        |     |  +--ro manually-modulation-mode?         string
+        |     |  +--ro transmit-modulation-mode?         string
+        |     |  +--ro receive-modulation-mode?          string
+        |     |  +--ro am-guaranteed-service-capacity?   string
+        |     |  +--ro am-full-service-capacity?         string
+        |     |  +--ro am-current-transmit-service-capacity?        string
+        |     |  +--ro am-current-receive-service-capacity?         string
+        |     |  +--ro guarantee-e1-capacity?            string
+        |     |  +--ro full-e1-capacity?                 string
+        |     |  +--ro composite-port-loopback?          string
+        |     |  +--ro error-frame-discard-status?       string
+        |     |  +--ro mac-address?          string
+        |     |  +--ro maximum-frame-size?   string
+        |     |  +--ro protocol-identifier?  string
+        |     |  +--ro port-mode?            string
+        |     |  +--ro qinq-tp-id?           string
+        |     |  +--ro tag?                  string
+        |     |  +--ro default-vlan-id?      string
+        |     |  +--ro vlan-priority?        string
+        |     |  +--ro mpls-status?          string
+        |     |  +--ro max-reserved-bandwidth?           string
+        |     |  +--ro admin-group?          string
+        |     |  +--ro ip-assigned-type?     string
+        |     |  +--ro ip-address?           string
+        |     |  +--ro ip-mask?              string
+        |     |  +--ro occupied-e1-capacity?             string
+        |     |  +--ro ethernet-capacity?    string
+        |     |  +--ro working-mode?         string
+        |     |  +--ro xpic-status?          string
+        |     |  +--ro bandwidth?            string
+        |     |  +--ro am-mode?              string
+        |     |  +--ro tx-power?             string
+        |     |  +--ro tx-status?            string
+        |     |  +--ro tx-radio-frequency?   string
+        |     |  +--ro rx-radio-frequency-actual?        string
+        |     |  +--ro tr-spacing?           string
+        |     +--ro pla!
+        |     |  +--ro pla-id?               string
+        |     |  +--ro bandwidth?            string
+        |     |  +--ro pla-type?             string
+        |     |  +--ro protection-type?      string
+        |     |  +--ro high-pri-service-threshold?       string
+        |     |  +--ro scheduling-mode?      string
+        |     |  +--ro ne-role?              string		
+        |     +--rw client-svc! (copied from OTN TE topology)
+        |     |  +--rw supported-client-signal*          identityref
+        |     |  +--ro client-signal-type?   string (from TTP)
+        |     |  +--ro client-signal-rate?   string (from TTP)
+        |     |  +--ro lpt-status?           string (from TTP)	
+		|     +--ro ctp-list* [ctp-id]
+		|        +--ro ctp-id                string
+		|        +--ro oper-status           identityref
+		|        +--ro odu!
+		|           +--ro ...
+		|        +--ro ...
+***************************
+        |     +--rw nt:tp-id                           tp-id
+        |     +--rw nt:supporting-termination-point*
+        |             [network-ref node-ref tp-ref]
+        |        +--rw nt:network-ref
+        |        |       -> ../../../nw:supporting-node/network-ref
+        |        +--rw nt:node-ref
+        |        |       -> ../../../nw:supporting-node/node-ref
+        |        +--rw nt:tp-ref         leafref
+        +--rw nt:link* [link-id]
+           +--rw nt:link-id            link-id
+           +--rw nt:source
+           |  +--rw nt:source-node?   -> ../../../nw:node/node-id
+           |  +--rw nt:source-tp?     leafref
+           +--rw nt:destination
+           |  +--rw nt:dest-node?   -> ../../../nw:node/node-id
+           |  +--rw nt:dest-tp?     leafref
+           +--rw nt:supporting-link* [network-ref link-ref]
+           |  +--rw nt:network-ref
+           |  |       -> ../../../nw:supporting-network/network-ref
+           |  +--rw nt:link-ref       leafref
+***************************
+           +--rw supporting-inventory* [inventory-id]
+           |  +--rw inventory-id       string
+           |  +--rw inventory-type     identityref
+           +--ro oper-status?       identityref
+           +--rw name?              string
+           +--rw alias?             string
+           +--rw description?       string
+           +--rw admin-status?      identityref
+           +--rw srlg
+           |  +--rw value*          uint32
+           +--rw type?              identityref
+           +--rw direction?         string
+           +--rw bandwidth?         string
+           +--rw available-bandwidth?   string
+           +--ro latency?           uint32
+           +--ro distance?          uint32
+           +--ro distance?          uint32
+           +--rw oper-status?       identityref
+***************************
