@@ -1,0 +1,489 @@
+module bbf-network-inventory {
+  yang-version 1.1;
+  namespace "urn:bbf:yang:bbf-network-inventory";
+  prefix bbf-ni;
+
+  import ietf-inet-types {
+    prefix inet;
+    reference
+      "RFC 6991: Common YANG Data Types";
+  }
+
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC6991: Common YANG Data Types.";
+  }
+
+  import ietf-network-inventory {
+    prefix ietf-ni;
+    reference
+    "draft-ietf-ivy-network-inventory-yang-01";
+  }
+
+  organization
+    "Broadband Forum <https://www.broadband-forum.org>
+     SDN/NFV Work Area";
+
+  contact
+    "Comments or questions about this Broadband Forum YANG module
+     should be directed to <mailto:info@broadband-forum.org>.
+
+     Editor:      xxx
+
+     Editor:      xxx
+
+     PS Leader:   Haomian Zheng, Huawei
+
+     WA Director: Mengmeng Li, China Mobile
+
+     WA Director: Haomian Zheng, Huawei
+
+     WA Director: Bruno Cornaglia, Vodafone";
+
+  description
+    "This module defines a YANG data model for retrieving access network
+     inventory based on the IETF IVY network inventory data model.
+
+     Copyright (c) 2019-2024, Broadband Forum
+
+     Redistribution and use in source and binary forms, with or
+     without modification, are permitted provided that the following
+     conditions are met:
+
+     1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above
+        copyright notice, this list of conditions and the following
+        disclaimer in the documentation and/or other materials
+        provided with the distribution.
+
+     3. Neither the name of the copyright holder nor the names of its
+        contributors may be used to endorse or promote products
+        derived from this software without specific prior written
+        permission.
+
+     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+     CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+     CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+     STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+     ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+     The above license is used as a license under copyright only.
+     Please reference the Forum IPR Policy for patent licensing terms
+     <https://www.broadband-forum.org/ipr-policy>.
+
+     Any moral rights which are necessary to exercise under the above
+     license grant are also deemed granted under this license.
+
+     This version of this YANG module is part of WT-454; see
+     the WT itself for full legal notices.";
+
+  revision 2024-04-03 {
+    description
+      "Issue 1.
+       * Approval Date:    xxx.
+       * Publication Date: xxx.";
+    reference
+      "WT-454: xxx";
+  }
+
+  //identities
+  identity pon-ne-physical {
+    base ietf-ni:ne-physical;
+    description
+      "A physical PON network element (NE).";
+  }
+
+  identity pon-olt {
+    base pon-ne-physical;
+    description
+      "Identifies a PON OLT.";
+  }
+
+  identity pon-onu {
+    base pon-ne-physical;
+    description
+      "Identifies a PON ONU/ONT.";
+  }
+
+  identity pon-dpu {
+    base pon-ne-physical;
+    description
+      "Identifies a PON DPU.";
+  }
+
+  identity pon-type-base {
+    description
+      "Base identity for PON type.";
+  }
+
+  identity gpon {
+    base pon-type-base;
+    description
+      "GPON.";
+    reference
+      "ITU-T G.984.3";
+  }
+
+  identity epon {
+    base pon-type-base;
+    description
+      "EPON.";
+    reference
+      "IEEE 802.3ah";
+  }
+
+  identity xg-pon {
+    base pon-type-base;
+    description
+      "XG-PON.";
+    reference
+      "ITU-T G.987.3";
+  }
+
+  identity xgs-pon {
+    base pon-type-base;
+    description
+      "XGS-PON.";
+    reference
+      "ITU-T G.9807.1";
+  }
+
+  identity epon-10g {
+    base pon-type-base;
+    description
+      "10G-EPON.";
+    reference
+      "IEEE 802.3av";
+  }
+
+  identity epon-25g {
+    base pon-type-base;
+    description
+      "25G-EPON.";
+    reference
+      "IEEE 802.3ca";
+  }
+
+  identity epon-50g {
+    base pon-type-base;
+    description
+      "50G-EPON.";
+    reference
+      "IEEE 802.3ca";
+  }
+
+  identity gpon-25g {
+    base pon-type-base;
+    description
+      "25G-GPON MSA.";
+    reference
+      "MSA 25GS-PON";
+  }
+
+  identity hs-pon {
+    base pon-type-base;
+    description
+      "Higher speed PON.";
+    reference
+      "ITU-T G.9804.1";
+  }
+
+  //enumerations
+  typedef com-status {
+    type enumeration {
+      enum normal {
+        description
+          "Normal.";
+      }
+      enum interrupt {
+        description
+          "Interrupt.";
+      }
+      enum unknown {
+        description
+          "Status is unknown.";
+      }
+    }
+    description
+      "Communication status of a PON network element.";
+  }
+
+
+  typedef pon-admin-status {
+    type enumeration {
+      enum active {
+        description
+          "Enabled.";
+      }
+      enum inactive {
+        description
+          "Disabled.";
+      }
+      enum testing {
+        description
+          "In some test mode.";
+      }
+      enum maintenance {
+        description
+          "The resource is disabled in the data plane for
+           maintenance purposes.";
+      }
+      enum unknown {
+        description
+          "Status is unknown.";
+      }
+    }
+    description
+      "Defines a type representing the administrateive states of
+       a PON resource.";
+  }
+
+   typedef onu-admin-status {
+      type enumeration {
+        enum active {
+          description
+            "The object is activated and in the management state.";
+        }
+        enum inactive {
+          description
+            "The object is not activated, indicating that the object is not managed.";
+        }
+        enum test {
+          description
+            "The object is in the test state.";
+        }
+        enum maintenance {
+          description
+            "The resource is disabled in the data plane for
+             maintenance purposes.";
+        }
+        enum unknown {
+          description
+            "Status is unknown.";
+        }
+      }
+      description
+        "Defines a type representing the administrateive states of
+         a onu resource.";
+    }
+
+
+    typedef onu-operate-status {
+      type enumeration {
+        enum up {
+          description
+            "On-line.";
+        }
+        enum down {
+          description
+            "Power-off, offline.";
+        }
+        enum invalid {
+          description
+            "Invalid State.";
+        }
+      }
+      description
+        "Defines a type representing the Running Status of a ONU resource.";
+   }
+
+  grouping olt-specific-info-grouping {
+    description
+      "Attributes applicable to PON OLT network elements.";
+
+    container olt-specific-info {
+      when "../ietf-ni:ne-type = 'bbf-ni:pon-olt'";
+      config false;
+
+      description
+        "This container contains attributes specific to
+         PON OLT network elements.";
+
+      leaf communication-status {
+        type com-status;
+        default "unknown";
+        description
+          "Communication status of the OLT.";
+      }
+
+      leaf admin-status {
+        type pon-admin-status;
+        description
+          "Administrative status of a PON NE.";
+      }
+
+      leaf create-date-and-time {
+        type yang:date-and-time;
+        description
+          "NE creation time in UTC or local time format.
+           The default format is UTC.";
+      }
+
+      leaf last-modified-date-and-time {
+        type yang:date-and-time;
+        description
+          "NE modification time in UTC or local format.
+           The default format is UTC.";
+      }
+
+      leaf ipv4-address {
+        type inet:ipv4-address;
+        description
+          "Management IPv4 address of an NE.";
+      }
+
+      leaf ipv6-address {
+        type inet:ipv6-address;
+        description
+          "Management IPv6 address of an NE.";
+      }
+
+      leaf mac-address {
+        type yang:mac-address;
+        description
+          "MAC address corresponding to the management
+           IP address.";
+      }
+    }
+  }
+
+  grouping olt-subtender-common-attr {
+    description
+      "Common attributes for all network elements, such as ONU, ONT,
+       and DPU, connecting to an OLT.";
+
+    list parent-ne {
+      leaf parent-ne-ref {
+        type leafref {
+          path "/ietf-ni:network-inventory"
+               + "/ietf-ni:network-elements"
+               + "/ietf-ni:network-element/ietf-ni:ne-id";
+        }
+        description
+          "ID of the parent NE (OLT) to which the NE belongs.";
+      }
+
+      leaf-list parent-port-ref {
+        type leafref {
+          path "/ietf-ni:network-inventory"
+               + "/ietf-ni:network-elements/ietf-ni:network-element"
+               + "[ietf-ni:ne-id=current()/../parent-ne-ref]"
+               + "/ietf-ni:components/ietf-ni:component"
+               + "/ietf-ni:component-id";
+        }
+        description
+          "ID of the PON port to which the NE is connected.";
+      }
+    }
+
+    leaf create-date-and-time {
+      type yang:date-and-time;
+      description
+        "NE creation time in UTC or local time format.
+         The default format is UTC.";
+    }
+
+    leaf last-down-time {
+      type yang:date-and-time;
+      description
+        "Indicates the last time when the NE goes offline.
+         The time is the local time of the system.";
+    }
+
+    leaf admin-status {
+      type onu-admin-status;
+      description
+        "Administrative status of a ONU.";
+    }
+
+    leaf operate-status {
+      type onu-operate-status;
+      description
+        "Running status of a ONU";
+    }
+
+    leaf distance-to-olt {
+      type int32;
+        description
+          "Indicates the distance between the ONU and the OLT
+          (unit: m).";
+    }
+
+    leaf onu-id {
+      type int32;
+      description
+        "ONU ID associated with the PON port.";
+    }
+
+    leaf down-bw-limit {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      description
+        "ONU downstream bandwidth limit, Unit: Mbps.";
+    }
+
+    leaf pon-type {
+      type identityref {
+      base pon-type-base;
+      }
+      description
+        "PON type.";
+    }
+
+    leaf loid {
+      type string;
+      description
+        "Logical identifier for ONU authentication.";
+    }
+  }
+  
+  grouping onu-specific-info-grouping {
+    description
+      "Attributes applicable to PON ONU/ONT network elements.";
+
+    container onu-specific-info {
+      when "../ietf-ni:ne-type = 'bbf-ni:pon-onu'";
+      config false;
+
+      description
+        "This container contains attributes specific to
+         PON ONUs.";
+
+      uses olt-subtender-common-attr;
+    }
+  }
+
+  grouping dpu-specific-info-grouping {
+    description
+      "Attributes applicable to PON DPU network elements.";
+
+    container dpu-specific-info {
+      when "../ietf-ni:ne-type = 'bbf-ni:pon-dpu'";
+      config false;
+
+      description
+        "This container contains attributes specific to PON DPUs.";
+
+      uses olt-subtender-common-attr;
+    }
+  }
+
+  augment "/ietf-ni:network-inventory/ietf-ni:network-elements/"
+        + "ietf-ni:network-element" {
+    uses olt-specific-info-grouping;
+    uses onu-specific-info-grouping;
+    uses dpu-specific-info-grouping;
+  }
+}
